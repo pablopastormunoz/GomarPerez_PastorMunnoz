@@ -86,6 +86,7 @@ public class CocheServiceImpl implements CocheService {
 		final Iterable<Coche> allCoches = cocheDAO.listCarsSortedByPrice();
 		final List<CocheDTO> coches = new ArrayList<>();
 		allCoches.forEach(coche -> {
+
 			final CocheDTO cocheDTO = map(coche);
 			coches.add(cocheDTO);
 		});
