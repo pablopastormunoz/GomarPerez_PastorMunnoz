@@ -22,6 +22,8 @@ public interface CocheService {
 
 	public CocheDTO map(Coche coche);
 
+	public List<CocheDTO> findCochesInStock();
+
 	public List<CocheDTO> listCochesSortedByPrice(Integer page, Integer size);
 
 	public List<CocheDTO> findCarsAlreadySold();
