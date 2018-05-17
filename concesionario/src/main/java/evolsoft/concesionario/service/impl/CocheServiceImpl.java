@@ -149,4 +149,11 @@ public class CocheServiceImpl implements CocheService {
 		}
 	}
 
+    @Override
+    public void createList(List<CocheDTO> listCocheDto) {
+	for(CocheDTO cocheDTO : listCocheDto) {
+	    cocheDAO.save(map(cocheDTO));
+	}
+    }
+
 }
