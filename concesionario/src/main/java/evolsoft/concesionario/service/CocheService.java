@@ -29,4 +29,6 @@ public interface CocheService {
 	public List<CocheDTO> findCarsAlreadySold();
 	
 	public List<CocheDTO> findCochesInPriceRange(Integer minPrice, Integer maxPrice);
+
+	void newSell(Integer idCoche, Integer idCliente, Integer idVendedor) throws NotFoundExcept;
 }
