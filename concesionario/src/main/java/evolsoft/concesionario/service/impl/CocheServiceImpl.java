@@ -100,10 +100,10 @@ public class CocheServiceImpl implements CocheService {
 		coches.forEach(coche -> {
 			final CocheDTO cocheDTO = map(coche);
 			cochesInStock.add(cocheDTO);
-		    });
+		});
 		return cochesInStock;
 	}
-    
+
 	@Override
 	public List<CocheDTO> findCochesInStock() {
 		List<Coche> coches = cocheDAO.findCarsInStock();
@@ -116,39 +116,41 @@ public class CocheServiceImpl implements CocheService {
 	}
 
 	@Override
-	public List<CocheDTO> findCochesInPriceRange(Integer minPrice, Integer maxPrice)
-	{	
-	List<Coche> coches = cocheDAO.findCarsBtwPriceRange(minPrice, maxPrice);
-	final List<CocheDTO> cochesInRange = new ArrayList<>();
-	coches.forEach(coche -> {
-	final CocheDTO retrievedCar = map(coche);
-	cochesInRange.add(cocheDTO);
-	});
-	return cochesInRange;
+	public List<CocheDTO> findCochesInPriceRange(Integer minPrice, Integer maxPrice) {
+		List<Coche> coches = cocheDAO.findCarsBtwPriceRange(minPrice, maxPrice);
+		final List<CocheDTO> cochesInRange = new ArrayList<>();
+		coches.forEach(coche -> {
+			final CocheDTO retrievedCar = map(coche);
+			cochesInRange.add(cocheDTO);
+		});
+		return cochesInRange;
 	}
-    
-    @Override
-    public void newSell(Integer idCoche, Integer idCliente, Integer idVendedor) throws NotFoundExcept {
-	Coche soldCar = cocheDAO.findOne(idCoche);
-	soldCar.setFechaVenta(todaysDate());
-	addClienteToSoldCar(idCliente, soldCar);
-	addVendedorToSoldCar(idVendedor, soldCar);
-	cocheDAO.save(soldCar);
-    }
-    public void addClienteToSoldCar(Integer idCliente, Coche coche) throws NotFoundExcept {
-	ClienteDTO clienteCoche = clienteService.findById(idCliente);
-	if(clienteCoche != null) {
-	    coche.setCliente(clienteService.map(clienteCoche));
+
+	@Override
+	public void newSell(Integer idCoche, Integer idCliente, Integer idVendedor) throws NotFoundExcept {
+		Coche soldCar = Optional.ofNullable(cocheDAO.findOne(idCoche)).orElseThrow(() -> new NotFoundExcept());
+		soldCar.setFechaVenta(todaysDate());
+		addClienteToSoldCar(idCliente, soldCar);
+		addVendedorToSoldCar(idVendedor, soldCar);
+		cocheDAO.save(soldCar);
 	}
-    }
-    public void addVendedorToSoldCar(Integer idVendedor, Coche coche) throws NotFoundExcept {
-	VendedorDTO vendedorCoche = vendedorService.findById(idVendedor);
-	if(vendedorCoche != null) {
-	    coche.setVendedor(vendedorService.map(vendedorCoche));
+
+	public void addClienteToSoldCar(Integer idCliente, Coche coche) throws NotFoundExcept {
+		ClienteDTO clienteCoche = clienteService.findById(idCliente);
+		if (clienteCoche != null) {
+			coche.setCliente(clienteService.map(clienteCoche));
+		}
 	}
-    }
-    private String todaysDate() {
-	Date today = Calendar.getInstance().getTime();
-	return today.toString();
-    }	
+
+	public void addVendedorToSoldCar(Integer idVendedor, Coche coche) throws NotFoundExcept {
+		VendedorDTO vendedorCoche = vendedorService.findById(idVendedor);
+		if (vendedorCoche != null) {
+			coche.setVendedor(vendedorService.map(vendedorCoche));
+		}
+	}
+
+	private String todaysDate() {
+		Date today = Calendar.getInstance().getTime();
+		return today.toString();
+	}
 }
