@@ -14,6 +14,8 @@ public interface CocheService {
 
 	CocheDTO create(CocheDTO cocheDTO);
 
+void createList(List<CocheDTO> listCocheDto);
+
 	void update(Integer id, CocheDTO cocheDTO);
 
 	void delete(Integer idCoche);
